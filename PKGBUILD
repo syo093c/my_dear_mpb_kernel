@@ -3,7 +3,7 @@
 #               Additionally, MrARM and Ronald Tschalär wrote apple-bce and
 #               apple-ibridge drivers, respectively.
 
-pkgbase="linux-t2"
+pkgbase="linux-lts-20230617"
 pkgver=6.1.34
 _srcname=linux-${pkgver}
 pkgrel=1
@@ -57,7 +57,7 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 
 _make() {
   test -s version
-  make  LLVM=1 -j24 KERNELRELEASE="$(<version)" "$@"
+  make  LLVM=1 -j12 KERNELRELEASE="$(<version)" "$@"
 }
 
 prepare() {
