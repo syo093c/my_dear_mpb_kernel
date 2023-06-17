@@ -33,8 +33,9 @@ makedepends=(
 conflicts=('apple-gmux-t2-dkms-git')
 replaces=('apple-gmux-t2-dkms-git')
 options=('!strip')
-_srcname="linux-${pkgver}-arch1"
-T2_PATCH_HASH=d0e70c9396db0c97b47155a649838bb7ba82a690
+_srcname="linux-${pkgver}"
+# please use lts version
+T2_PATCH_HASH=71eb8c9335cafc6b1fd2dbd5415ae24ceb30e32c
 source=(
   #https://github.com/archlinux/linux/archive/refs/tags/v${pkgver}-arch1.tar.gz
   https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${pkgver}.tar.xz
@@ -56,7 +57,7 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 
 _make() {
   test -s version
-  make  LLVM=1 KERNELRELEASE="$(<version)" "$@"
+  make  LLVM=1 -j24 KERNELRELEASE="$(<version)" "$@"
 }
 
 prepare() {
@@ -65,9 +66,9 @@ prepare() {
   echo "Setting version..."
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux}" > localversion.20-pkgname
-  make defconfig
-  make -s kernelrelease > version
-  make mrproper
+  make  LLVM=1 defconfig
+  make  LLVM=1 -s kernelrelease > version
+  make  LLVM=1 mrproper
 
   t2linux_patches=$(ls $srcdir/patches | grep -e \.patch$)
   mv $srcdir/patches/*.patch $srcdir/
@@ -77,7 +78,7 @@ prepare() {
     src="${src##*/}"
     [[ $src = *.patch ]] || continue
     echo "Applying patch $src..."
-    patch -Np1 < "../$src"
+    patch  -Np1 < "../$src"
   done
 
   echo "Setting config..."
@@ -250,7 +251,7 @@ for _p in "${pkgname[@]}"; do
   }"
 done
 
-sha256sums=('354317a6fd70399db29f204059b87ca923942c4b732bc38afb015a412f3394de'
-            '6b337a9d3cfdc00005589a80b8d36fa500f6a92ed21565a3aceec48d7202a7da'
+sha256sums=('SKIP'
+            'SKIP'
             'SKIP')
 # vim:set ts=8 sts=2 sw=2 et:
